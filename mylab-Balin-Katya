@@ -1,0 +1,162 @@
+Katya Balin 
+
+
+
+
+
+BJP5 Self-Check 12.3: mystery1
+
+ 
+
+
+
+
+
+
+BJP5 Self-Check 12.4: mystery2
+
+ 
+
+
+BJP5 Self-Check 12.5: mystery3
+
+
+ 
+
+
+
+
+Task Lists 
+
+1.	Fac(n)
+public int fac(int n) {
+    if (n == 0) {
+        return 1; 
+    } else {
+        return n * fac(n - 1); 
+    }
+}
+
+
+The fac method calculates the factorial of a non-negative integer ‘n’, that is defined by all positive integers from 1 to n. It uses a base case that returns 1 when n is 0 (0! Is 1). The recursive case multiplies n by the factorial of n-1, which progressively reduces n until the base case is reached. 
+
+2.	Sum(n)
+public int sum(int n) {
+    if (n == 0) {
+        return 0; 
+    } else {
+        return n + sum(n - 1); 
+    }
+}
+
+The sum method calculates the sum of the first n positive integers. It returns 0 when n is 0 as the base case. For the recursive case it adds n to the sum of the first n-1 integers, decreasing n recursively until reaching the base case. 
+
+3.	Pow(x, n)
+public double pow(double x, int n) {
+    if (n == 0) {
+        return 1; 
+    } else {
+        return x * pow(x, n - 1); 
+    }
+}
+
+The pow method computes x raised to the power of n, with n as a positive integer and x as a real number. The base returns 1 when n is 0 because any number raised to the power of 0 is 1. The recursive case multiplies x by pow(x, n-1), recursively decrementing n until the base case is met. 
+
+4.	isPalindrome(str)
+public boolean isPalindrome(String str) {
+    if (str.length() <= 1) {
+        return true; 
+    } else {
+        if (str.charAt(0) == str.charAt(str.length() - 1)) {
+            return isPalindrome(str.substring(1, str.length() - 1));
+        } else {
+            return false; 
+        }
+    }
+}
+
+The isPalindrome method checks if the string reads the same forwards and backwards (which is what a palindrome is). It returns true for strings with length 0 or 1 as the base case, since those strings are palindromes. The recursive case compares the first and last characters and calls itself on the substring that excludes these characters to verify that it is in fact a palindrome. 
+
+
+All of these have in common: Is that they have recursion, base case, and recursive case. Recursion is involved because the methods break down into smaller parts and then form back into the original problem. Base cases are involved because it acts as the stopping condition of the recursion. Recursive cases are involved because each method reduces the problem size and moves toward the base case. 
+
+
+
+
+
+Memoization 
+
+1.	How many recursive calls are needed to compute fib(6)? Explain.
+-	25 recursive calls are needed to compute fib(6). The # grows exponentially because each call to fib(n) results in two more calls until it reaches the base cases. 
+2.	How many recursive calls are need to compute mfib(6)? Explain.
+-	7 recursive calls are need to compute mfib(6). Due to memorization, each Fibonacci number is calculated once which reduces the number drastically. So the exponential time complexity becomes O(n). 
+3.	What was the major difference between the two?
+-	The major difference is that mfib(n) uses memorization to store and reuse the previously computed Fibonacci numbers (which drastically reduces the number of redundant recursive calls). This allows mfib(n) to run in linear time and fib(n) in exponential time. Mfib(n) is more efficient for this reason, especially when n has larger values.
+
+1.	Fib(n)
+public class Fibonacci {
+
+    public static long fib(int n) {
+        if (n <= 1) {
+            return n; 
+        } else {
+            return fib(n - 1) + fib(n - 2); 
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(fib(6));  
+    }
+}
+
+2.	Mfib(n)
+public class Fibonacci {
+    public static long mfib(int n) {
+        long[] memo = new long[n + 1]; 
+        return memoHelper(n, memo);
+    }
+    private static long memoHelper(int n, long[] memo) {
+        if (n <= 1) {
+            return n; 
+        }
+        if (memo[n] != 0) {
+            return memo[n]; 
+        }
+        
+        memo[n] = memoHelper(n - 1, memo) + memoHelper(n - 2, memo);
+        return memo[n];
+    }
+}
+ 3. public class Fibonacci {
+
+    public static long ifib(int n) {
+        if (n <= 1) {
+            return n; 
+        }
+        long a = 0, b = 1;
+        for (int i = 2; i <= n; i++) {
+            long temp = a + b;
+            a = b;
+            b = temp;
+        }
+        return b;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(ifib(6));  
+    }
+}
+
+
+ 
+
+
+The results for n=21 were correct because the expected result was 10946 which was what was produced. For n=24 the results were also correct with the actual and expected result to be 267914296. For n=49 the actual result was wrong because of overflow, it was 365010934. The expected result was 7778742049. It results in overflow because the Fibonacci number for n=49 is 7778742049 which is above the value that int can store which is 2147483647. This results in overflow. 
+The significance of using long instead of int was because when calculating large Fibonacci numbers because it stops overflow from occurring and makes the answers more accurate. Long is important for numbers past the 46th Fibonacci number.  
+
+
+
+
+
+
+
